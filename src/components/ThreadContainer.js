@@ -25,6 +25,7 @@ function Input({ index, onRemove, onChange, value, ...props }) {
         onChange={e => onChange(e.target.value)}
         sx={{
           boxSizing: "border-box",
+          fontFamily: "body",
           flex: 1,
           p: 2,
           ml: index === 0 ? 0 : 4,
