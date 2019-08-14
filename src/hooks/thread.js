@@ -18,12 +18,14 @@ export function useScheduleThread(threadId, userId) {
   return { scheduleThread }
 }
 
-function snapshotDataToThreads(snapshot) {
+function snapshotDataToThreads(threadType, snapshot) {
   const data = snapshot.val()
   if (!data) return []
   const arr = Object.entries(data)
     .map(([id, value]) => ({ ...value, id }))
-    .sort((a, b) => a.willPostAt - b.willPostAt)
+    .sort((a, b) =>
+      threadType === "upcoming" ? a.willPostAt - b.willPostAt : b.willPostAt - a.willPostAt,
+    )
   return arr
 }
 
@@ -31,7 +33,7 @@ function useThreadList(threadType, userId) {
   const [threads, setThreads] = React.useState([])
 
   function onValueChange(snapshot) {
-    setThreads(snapshotDataToThreads(snapshot))
+    setThreads(snapshotDataToThreads(threadType, snapshot))
   }
 
   useFirebase(firebase => {

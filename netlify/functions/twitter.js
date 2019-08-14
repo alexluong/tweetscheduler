@@ -9,36 +9,38 @@ export async function handler() {
       uri: `${FIREBASE_DATABASE_URL}/upcoming.json`,
       json: true,
     })
-    let scheduleList = Object.keys(data.schedule)
-    scheduleList = scheduleList.filter(schedule => time >= schedule)
+    if (data) {
+      let scheduleList = Object.keys(data.schedule)
+      scheduleList = scheduleList.filter(schedule => time >= schedule)
 
-    const deletePromises = []
-    const movePromises = []
-    for (let scheduleId of scheduleList) {
-      const scheduledThreads = Object.values(data.schedule[scheduleId])
-      for (let thread of scheduledThreads) {
-        const { userId, threadId } = thread
-        const tweetsData = await postThread(userId, threadId)
+      const deletePromises = []
+      const movePromises = []
+      for (let scheduleId of scheduleList) {
+        const scheduledThreads = Object.values(data.schedule[scheduleId])
+        for (let thread of scheduledThreads) {
+          const { userId, threadId } = thread
+          const tweetsData = await postThread(userId, threadId)
+
+          deletePromises.push(
+            request.delete({
+              uri: `${FIREBASE_DATABASE_URL}/upcoming/threads/${userId}/${threadId}.json`,
+            }),
+          )
+          movePromises.push(
+            request.put({
+              uri: `${FIREBASE_DATABASE_URL}/archived/threads/${userId}/${threadId}.json`,
+              body: JSON.stringify(tweetsData),
+            }),
+          )
+        }
 
         deletePromises.push(
-          request.delete({
-            uri: `${FIREBASE_DATABASE_URL}/upcoming/threads/${userId}/${threadId}.json`,
-          }),
-        )
-        movePromises.push(
-          request.put({
-            uri: `${FIREBASE_DATABASE_URL}/archived/threads/${userId}/${threadId}.json`,
-            body: JSON.stringify(tweetsData),
-          }),
+          request.delete({ uri: `${FIREBASE_DATABASE_URL}/upcoming/schedule/${scheduleId}.json` }),
         )
       }
 
-      deletePromises.push(
-        request.delete({ uri: `${FIREBASE_DATABASE_URL}/upcoming/schedule/${scheduleId}.json` }),
-      )
+      Promise.all([...deletePromises, ...movePromises])
     }
-
-    Promise.all([...deletePromises, ...movePromises])
   } catch (error) {
     console.log(error)
   }
@@ -66,6 +68,8 @@ async function postThread(userId, threadId) {
     let id = null
     for (let tweet of tweets) {
       const res = await postTweet(tweet, id, token, secret)
+      console.log(res)
+
       id = res.id_str
     }
   } catch (error) {
@@ -76,10 +80,20 @@ async function postThread(userId, threadId) {
 }
 
 function postTweet(status, id, token, secret) {
-  const idParam = id ? `&in_reply_to_status_id=${id}&auto_populate_reply_metadata=true` : ""
   return request.post({
-    url: `https://api.twitter.com/1.1/statuses/update.json?status=${status}${idParam}`,
+    url: `https://api.twitter.com/1.1/statuses/update.json`,
     oauth: { ...twitterOauth, token, token_secret: secret },
-    json: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    form: {
+      status,
+      ...(id
+        ? {
+            in_reply_to_status_id: id,
+            auto_populate_reply_metadata: true,
+          }
+        : {}),
+    },
   })
 }

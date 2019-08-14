@@ -121,7 +121,6 @@ function ThreadContainer({ threadId, userId }) {
         disabled={hasError}
         sx={{ variant: "buttons.primary" }}
         onClick={() => {
-          console.log(willPostAt)
           const filteredTweets = tweets.filter(tweet => tweet.length > 0)
           scheduleThread(filteredTweets, willPostAt.getTime()).then(() => navigate("/"))
         }}
