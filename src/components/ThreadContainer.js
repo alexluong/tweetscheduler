@@ -79,7 +79,7 @@ function ThreadContainer({ threadId, userId }) {
             selected={willPostAt}
             onChange={newTime => {
               if (newTime.getTime() > new Date().getTime()) {
-                setWillPostAt(newTime)
+                setWillPostAt(newTime.getTime())
               }
             }}
             showTimeSelect
@@ -122,7 +122,7 @@ function ThreadContainer({ threadId, userId }) {
         sx={{ variant: "buttons.primary" }}
         onClick={() => {
           const filteredTweets = tweets.filter(tweet => tweet.length > 0)
-          scheduleThread(filteredTweets, willPostAt.getTime()).then(() => navigate("/"))
+          scheduleThread(filteredTweets, willPostAt).then(() => navigate("/"))
         }}
       >
         Save

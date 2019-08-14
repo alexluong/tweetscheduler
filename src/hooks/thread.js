@@ -6,12 +6,28 @@ export function useScheduleThread(threadId, userId) {
   const firebase = React.useContext(FirebaseContext)
   const db = firebase.database()
 
-  function scheduleThread(tweets, time) {
+  async function scheduleThread(tweets, time, oldTime) {
     const finalThreadId = threadId ? threadId : shortid.generate()
-    const promises = [
+    const promises = []
+
+    if (threadId) {
+      const snapshot = await db
+        .ref(`upcoming/threads/${userId}/${threadId}/willPostAt`)
+        .once("value")
+      const oldTime = snapshot.val()
+      console.log(oldTime)
+      if (time !== oldTime) {
+        promises.push(db.ref(`upcoming/schedule/${oldTime}/${finalThreadId}`).remove())
+      }
+    }
+
+    promises.push(
       db.ref(`upcoming/threads/${userId}/${finalThreadId}`).set({ tweets, willPostAt: time }),
-      db.ref(`upcoming/schedule/${time}`).push({ threadId: finalThreadId, userId }),
-    ]
+    )
+    promises.push(
+      db.ref(`upcoming/schedule/${time}/${finalThreadId}`).set({ threadId: finalThreadId, userId }),
+    )
+
     return Promise.all(promises)
   }
 
@@ -56,7 +72,7 @@ export function useArchivedThreads(userId) {
 export function useThread(threadId, userId) {
   const [{ tweets, willPostAt }, setThread] = React.useState({
     tweets: [""],
-    willPostAt: new Date(),
+    willPostAt: new Date().getTime(),
   })
 
   const setTweets = newTweets => setThread(oldThread => ({ ...oldThread, tweets: newTweets }))
