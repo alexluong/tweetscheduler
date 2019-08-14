@@ -83,6 +83,7 @@ function postTweet(status, id, token, secret) {
   return request.post({
     url: `https://api.twitter.com/1.1/statuses/update.json`,
     oauth: { ...twitterOauth, token, token_secret: secret },
+    json: true,
     headers: {
       "Content-Type": "application/json",
     },
