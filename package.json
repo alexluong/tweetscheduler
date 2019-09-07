@@ -3,48 +3,21 @@
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
+    "postinstall": "netlify-lambda install server",
     "build": "yarn build:lambda && yarn build:app",
-    "build:app": "gatsby build",
-    "build:lambda": "netlify-lambda build netlify/functions",
-    "develop": "gatsby develop",
-    "format": "prettier --write src/**/*.{js,jsx}",
-    "start": "yarn develop",
-    "start:lambda": "dotenv -e netlify/.env netlify-lambda serve netlify/functions",
-    "clean": "gatsby clean",
-    "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "start:app": "yarn workspace @ts/client start",
+    "build:app": "yarn workspace @ts/client build",
+    "start:lambda": "dotenv -e server/.env netlify-lambda serve server/functions",
+    "build:lambda": "netlify-lambda build server/functions"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.15",
-    "@mdx-js/react": "^1.2.2",
-    "@theme-ui/typography": "^0.2.29",
-    "@xstate/react": "^0.7.0",
-    "date-fns": "^1.30.1",
-    "deepmerge": "^4.0.0",
-    "dompurify": "^1.0.11",
-    "firebase": "^6.3.5",
-    "gatsby": "^2.13.57",
-    "gatsby-plugin-firebase": "^0.1.1",
-    "gatsby-plugin-google-analytics": "^2.1.7",
-    "gatsby-plugin-layout": "^1.1.3",
-    "gatsby-plugin-react-helmet": "^3.1.3",
-    "gatsby-plugin-theme-ui": "^0.2.33",
-    "react": "^16.9.0",
-    "react-datepicker": "^2.8.0",
-    "react-dom": "^16.9.0",
-    "react-helmet": "^5.2.1",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.4",
-    "shortid": "^2.2.14",
-    "theme-ui": "^0.2.33",
-    "typography-theme-wordpress-2016": "^0.16.19",
-    "xstate": "^4.6.7"
-  },
-  "devDependencies": {
     "dotenv-cli": "^2.0.1",
-    "http-proxy-middleware": "^0.19.1",
-    "netlify-lambda": "^1.5.1",
-    "prettier": "^1.18.2"
-  }
+    "netlify-lambda": "^1.6.3"
+  },
+  "devDependencies": {}
 }

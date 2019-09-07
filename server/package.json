@@ -1,0 +1,9 @@
+{
+  "name": "@ts/server",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server-lambda": "^2.9.3"
+  }
+}
