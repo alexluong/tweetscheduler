@@ -1,5 +1,5 @@
 {
-  "name": "scheduled-tweetstorm",
+  "name": "tweetscheduler",
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
@@ -7,16 +7,8 @@
     "client",
     "server"
   ],
-  "scripts": {
-    "postinstall": "netlify-lambda install server",
-    "build": "yarn build:lambda && yarn build:app",
-    "start:app": "yarn workspace @ts/client start",
-    "build:app": "yarn workspace @ts/client build",
-    "start:lambda": "dotenv -e server/.env netlify-lambda serve server/functions",
-    "build:lambda": "netlify-lambda build server/functions"
-  },
+  "scripts": {},
   "dependencies": {
-    "dotenv-cli": "^2.0.1",
     "netlify-lambda": "^1.6.3"
   },
   "devDependencies": {}

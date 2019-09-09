@@ -3,7 +3,21 @@
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node"
+  },
   "dependencies": {
-    "apollo-server-lambda": "^2.9.3"
+    "apollo-server-express": "^2.9.3",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-transform-async-to-generator": "^7.5.0",
+    "@babel/preset-env": "^7.6.0",
+    "nodemon": "^1.19.2"
   }
 }
