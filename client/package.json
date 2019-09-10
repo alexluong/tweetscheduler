@@ -15,9 +15,11 @@
   "dependencies": {
     "gatsby": "^2.15.9",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
+    "dotenv": "^8.1.0",
     "prettier": "^1.18.2"
   }
 }
