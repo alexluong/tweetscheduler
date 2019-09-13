@@ -9,11 +9,10 @@ function GlobalStyle() {
           font-family: "Lato", sans-serif;
           box-sizing: border-box;
         }
-        body {
-          height: 100vh;
-        }
+        body,
         #___gatsby,
         #gatsby-focus-wrapper {
+          min-height: 100vh;
           height: 100%;
         }
       `}

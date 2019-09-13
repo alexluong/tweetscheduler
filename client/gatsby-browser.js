@@ -1,3 +1,4 @@
+import "react-datepicker/dist/react-datepicker.css"
 import "typeface-lato"
 import React from "react"
 import Layout from "./src"

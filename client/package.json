@@ -21,6 +21,7 @@
     "gatsby": "^2.15.9",
     "gatsby-plugin-emotion": "^4.1.6",
     "react": "^16.9.0",
+    "react-datepicker": "^2.9.6",
     "react-dom": "^16.9.0",
     "socket.io-client": "^2.2.0",
     "typeface-lato": "^0.0.75"

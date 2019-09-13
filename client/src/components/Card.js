@@ -13,18 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/core"
 import { COLORS } from "../utils/constants"
-
-function getStatusColor(status) {
-  switch (status) {
-    case "DRAFT":
-      return "yellow"
-    case "POSTED":
-      return "green"
-    case "SCHEDULED":
-    default:
-      return "blue"
-  }
-}
+import getStatusColor from "../utils/getStatusColor"
 
 function Card({ scheduledTweet }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
