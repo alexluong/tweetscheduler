@@ -6,7 +6,7 @@ import Card from "../components/Card"
 function DashboardPage() {
   return (
     <Layout>
-      <Heading as="h2" size="lg" mb={4}>
+      <Heading as="h2" size="lg" mb={8}>
         Upcoming
       </Heading>
       <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
@@ -15,7 +15,7 @@ function DashboardPage() {
         ))}
       </Grid>
 
-      <Heading as="h2" size="lg" mt={16} mb={4}>
+      <Heading as="h2" size="lg" mb={8} mt={16}>
         Archives
       </Heading>
       <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">

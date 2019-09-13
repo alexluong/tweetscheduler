@@ -40,7 +40,7 @@ function Card({ scheduledTweet }) {
   return (
     <Box
       bg="white"
-      p={6}
+      p={8}
       rounded={4}
       shadow="md"
       borderTopWidth={2}
@@ -68,32 +68,33 @@ function Card({ scheduledTweet }) {
       </Text>
 
       {scheduledTweet.status !== "POSTED" && (
-        <Box mt={4}>
-          <Button variant="outline" variantColor={COLORS.primary} size="sm" mr="2">
-            Edit
-          </Button>
-          <Button variant="ghost" variantColor={COLORS.danger} size="sm" onClick={onOpen}>
-            Delete
-          </Button>
-        </Box>
+        <>
+          <Box mt={8}>
+            <Button variant="outline" variantColor={COLORS.primary} size="sm" mr="2">
+              Edit
+            </Button>
+            <Button variant="ghost" variantColor={COLORS.danger} size="sm" onClick={onOpen}>
+              Delete
+            </Button>
+          </Box>
+          <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Tweets
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button variantColor="red" onClick={deleteScheduledTweet} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialog>
+        </>
       )}
-
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-          Delete Tweets
-        </AlertDialogHeader>
-
-        <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
-
-        <AlertDialogFooter>
-          <Button ref={cancelRef} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variantColor="red" onClick={deleteScheduledTweet} ml={3}>
-            Delete
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialog>
     </Box>
   )
 }
