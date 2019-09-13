@@ -7,7 +7,10 @@
     "client",
     "server"
   ],
-  "scripts": {},
+  "scripts": {
+    "start:server": "yarn workspace @ts/server start",
+    "start:client": "yarn workspace @ts/client start"
+  },
   "dependencies": {
     "netlify-lambda": "^1.6.3"
   },

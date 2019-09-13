@@ -14,6 +14,9 @@ const TWITTER_CONFIG = {
   callbackURL: "http://127.0.0.1:8080/twitter/callback",
 }
 
+const SESSION_SECRET = process.env.SESSION_SECRET
+const JWT_SECRET = process.env.JWT_SECRET
+
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
@@ -26,7 +29,7 @@ app.use(cors())
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
   }),
@@ -36,9 +39,8 @@ passport.serializeUser((user, cb) => cb(null, user))
 passport.deserializeUser((obj, cb) => cb(null, obj))
 
 passport.use(
-  new TwitterStrategy(TWITTER_CONFIG, (accessToken, refreshToken, profile, cb) => {
-    console.log(accessToken)
-    console.log(refreshToken)
+  new TwitterStrategy(TWITTER_CONFIG, (token, secret, profile, cb) => {
+    console.log(profile)
     const user = {
       name: profile.username,
       photo: profile.photos[0].value.replace(/_normal/, ""),
