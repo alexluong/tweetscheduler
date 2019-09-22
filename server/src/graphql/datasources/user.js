@@ -12,13 +12,20 @@ class UserAPI extends DataSource {
   }
 
   async findUser() {
-    const result = await this.store.User.create({
+    const id = "KjJGywYu"
+    const user = await this.store.User.findByPk(id)
+
+    console.log(user.toJSON())
+  }
+
+  async createUser() {
+    const user = await this.store.User.create({
       id: shortId.generate(),
       token: "token",
       secret: "secret",
     })
 
-    console.log(result.toJSON())
+    return user.toJSON()
   }
 }
 

@@ -1,4 +1,5 @@
 import React from "react"
+import { navigate } from "gatsby"
 import io from "socket.io-client"
 import { Button } from "@chakra-ui/core"
 
@@ -8,18 +9,18 @@ const socket = io(API_URL)
 let popup = null
 
 function Auth() {
-  const [disabled, setDisabled] = React.useState(null)
-  const [user, setUser] = React.useState({})
+  const [isDisabled, setIdDisabled] = React.useState(null)
 
   React.useEffect(() => {
-    socket.on("user", user => {
-      setUser(user)
+    socket.on("token", token => {
+      localStorage.setItem("accessToken", JSON.stringify(token))
       popup.close()
+      navigate("/dashboard")
     })
   }, [])
 
   function signIn() {
-    setDisabled(true)
+    setIdDisabled(true)
     popup = openPopup()
     checkPopup()
   }
@@ -45,17 +46,15 @@ function Auth() {
     const check = setInterval(() => {
       if (!popup || popup.closed || popup.closed === undefined) {
         clearInterval(check)
-        setDisabled(false)
+        setIdDisabled(false)
       }
     }, 1000)
   }
 
   return (
-    <div>
-      <Button variantColor="teal" size="lg" onClick={signIn}>
-        Sign In With Twitter
-      </Button>
-    </div>
+    <Button variantColor="teal" size="lg" onClick={signIn} isDisabled={isDisabled}>
+      Sign In With Twitter
+    </Button>
   )
 }
 
