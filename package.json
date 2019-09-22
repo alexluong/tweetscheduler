@@ -5,11 +5,13 @@
   "license": "MIT",
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "database"
   ],
   "scripts": {
     "start:server": "yarn workspace @ts/server start",
-    "start:client": "yarn workspace @ts/client start"
+    "start:client": "yarn workspace @ts/client start",
+    "db": "yarn workspace @ts/database db"
   },
   "dependencies": {
     "netlify-lambda": "^1.6.3"

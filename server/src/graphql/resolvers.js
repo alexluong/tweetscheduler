@@ -1,6 +1,9 @@
 const resolvers = {
   Query: {
-    hello: () => "Hello world!",
+    hello: (root, args, { dataSources }) => {
+      dataSources.userAPI.findUser()
+      return "Hello world!"
+    },
   },
 }
 

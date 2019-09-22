@@ -1,26 +1,16 @@
 {
-  "name": "@ts/server",
+  "name": "@ts/database",
   "private": true,
   "version": "0.1.0",
   "license": "MIT",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js --exec babel-node"
+    "db": "dotenv -e .env babel-node"
   },
   "dependencies": {
-    "@ts/database": "0.1.0",
-    "apollo-datasource": "^0.6.3",
-    "apollo-server-express": "^2.9.3",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
     "dotenv": "^8.1.0",
-    "express": "^4.17.1",
-    "express-session": "^1.16.2",
-    "jsonwebtoken": "^8.5.1",
-    "passport": "^0.4.0",
-    "passport-twitter": "^1.0.4",
     "sequelize": "^5.18.4",
     "shortid": "^2.2.15",
-    "socket.io": "^2.2.0",
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {
@@ -30,6 +20,6 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/plugin-transform-async-to-generator": "^7.5.0",
     "@babel/preset-env": "^7.6.0",
-    "nodemon": "^1.19.2"
+    "dotenv-cli": "^2.0.1"
   }
 }

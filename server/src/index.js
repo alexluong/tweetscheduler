@@ -6,7 +6,8 @@ import socketio from "socket.io"
 import cors from "cors"
 import passport from "passport"
 import { Strategy as TwitterStrategy } from "passport-twitter"
-import apolloServer from "./graphql"
+import { createStore } from "@ts/database"
+import createApolloServer from "./graphql"
 
 const TWITTER_CONFIG = {
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
@@ -16,6 +17,8 @@ const TWITTER_CONFIG = {
 
 const SESSION_SECRET = process.env.SESSION_SECRET
 const JWT_SECRET = process.env.JWT_SECRET
+
+const store = createStore()
 
 const app = express()
 const server = http.createServer(app)
@@ -64,8 +67,11 @@ app.get("/twitter/callback", twitterAuth, (req, res) => {
 })
 
 // Apollo
+const apolloServer = createApolloServer(store)
 apolloServer.applyMiddleware({ app })
 
 // Start server
 const PORT = 8080
-server.listen({ port: PORT }, () => console.log(`🚀 Server ready at http://localhost:${PORT}`))
+server.listen({ port: PORT }, () =>
+  console.log(`🚀 GraphQL ready at http://127.0.0.1:${PORT}/graphql`),
+)

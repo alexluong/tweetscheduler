@@ -1,7 +1,15 @@
 import { ApolloServer } from "apollo-server-express"
-import schema from "./schema"
+import typeDefs from "./schema"
 import resolvers from "./resolvers"
+import UserAPI from "./datasources/user"
 
-const server = new ApolloServer({ typeDefs: schema, resolvers })
+function createApolloServer(store) {
+  const dataSources = () => ({
+    userAPI: new UserAPI({ store }),
+  })
 
-export default server
+  const server = new ApolloServer({ typeDefs, resolvers, dataSources })
+  return server
+}
+
+export default createApolloServer
