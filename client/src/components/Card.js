@@ -51,7 +51,7 @@ function Card({ scheduledTweet }) {
         ) : (
           <>
             {scheduledTweet.tweets[0].content.substring(0, 100)} ...{" "}
-            <Badge>{scheduledTweet.tweets.length} tweets</Badge>
+            <Badge as="span">{scheduledTweet.tweets.length} tweets</Badge>
           </>
         )}
       </Text>

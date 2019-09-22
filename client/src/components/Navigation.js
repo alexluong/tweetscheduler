@@ -1,16 +1,20 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import { COLORS } from "../utils/constants"
-import Avatar from "./Avatar"
-import { Flex, Button } from "@chakra-ui/core"
+import { Flex, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/core"
+import { useAuth } from "./AuthContext"
 
 function Navigation() {
+  const { username, signOut } = useAuth()
+
+  function signOutAndNavigate() {
+    signOut()
+    navigate("/")
+  }
+
   return (
     <Flex align="center" justify="space-between" px={4} py={6}>
-      <Avatar
-        url="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png"
-        alt="Tweet Scheduler logo"
-      />
+      <h1>Tweet Scheduler</h1>
       <Flex align="center" justify="start">
         <Button as={Link} to="/new" variant="outline" variantColor={COLORS.primary} mr={2}>
           Schedule a Tweet
@@ -22,10 +26,14 @@ function Navigation() {
           Archives
         </Button>
 
-        <Avatar
-          url="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png"
-          alt="user profile"
-        />
+        <Menu>
+          <MenuButton as={Button} rightIcon="chevron-down">
+            @{username}
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={signOutAndNavigate}>Sign out</MenuItem>
+          </MenuList>
+        </Menu>
       </Flex>
     </Flex>
   )

@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\""
   },
   "dependencies": {
-    "@chakra-ui/core": "^0.2.6",
+    "@chakra-ui/core": "^0.2.8",
     "@emotion/core": "^10.0.17",
     "@emotion/styled": "^10.0.17",
     "date-fns": "^2.2.1",

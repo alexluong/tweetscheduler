@@ -15,7 +15,6 @@ exports.createStore = function() {
       primaryKey: true,
     },
     username: Sequelize.STRING,
-    avatarUrl: Sequelize.STRING,
     token: Sequelize.STRING,
     secret: Sequelize.STRING,
   })

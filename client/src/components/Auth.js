@@ -2,6 +2,7 @@ import React from "react"
 import { navigate } from "gatsby"
 import io from "socket.io-client"
 import { Button } from "@chakra-ui/core"
+import { useAuth } from "./AuthContext"
 
 const API_URL = process.env.GATSBY_API_URL
 
@@ -10,14 +11,20 @@ let popup = null
 
 function Auth() {
   const [isDisabled, setIdDisabled] = React.useState(null)
+  const { setIsAuthenticated, setUsername } = useAuth()
 
   React.useEffect(() => {
-    socket.on("token", token => {
+    function onToken({ token, username }) {
       localStorage.setItem("accessToken", JSON.stringify(token))
+      localStorage.setItem("username", JSON.stringify(username))
+      setIsAuthenticated(true)
+      setUsername(username)
       popup.close()
       navigate("/dashboard")
-    })
-  }, [])
+    }
+    socket.on("token", onToken)
+    return () => socket.off("token", onToken)
+  }, [setIsAuthenticated, setUsername])
 
   function signIn() {
     setIdDisabled(true)

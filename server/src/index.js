@@ -56,7 +56,6 @@ passport.use(
       const newUser = await User.create({
         id: profile.id,
         username: profile.username,
-        avatarUrl: profile.photos[0].value.replace(/_normal/, ""),
         token: jwt.sign(token, TOKEN_SECRET),
         secret: jwt.sign(secret, TOKEN_SECRET),
       })
@@ -77,7 +76,10 @@ const addSocketIdToSession = (req, res, next) => {
 app.get("/twitter", addSocketIdToSession, twitterAuth)
 
 app.get("/twitter/callback", twitterAuth, (req, res) => {
-  io.in(req.session.socketId).emit("token", jwt.sign(req.user, JWT_SECRET))
+  io.in(req.session.socketId).emit("token", {
+    token: jwt.sign(req.user, JWT_SECRET),
+    username: req.user.username,
+  })
   res.end()
 })
 
