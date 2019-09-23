@@ -5,6 +5,7 @@ import { Grid, Heading } from "@chakra-ui/core"
 import PrivateRoute from "../components/PrivateRoute"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
+import { STATUS } from "../utils/constants"
 
 const dashboardViewQuery = gql`
   query {
@@ -47,10 +48,10 @@ function DashboardPage() {
   }
 
   const upcomingTweets = res.data.dashboardView.scheduledTweets.filter(
-    tweet => tweet.status !== "POSTED",
+    tweet => tweet.status !== STATUS.posted,
   )
   const archivedTweets = res.data.dashboardView.scheduledTweets.filter(
-    tweet => tweet.status === "POSTED",
+    tweet => tweet.status === STATUS.posted,
   )
 
   return (

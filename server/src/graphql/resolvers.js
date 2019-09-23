@@ -24,7 +24,29 @@ const resolvers = {
       if (scheduledTweet.userId !== user.id) {
         throw new Error("Unauthorized")
       }
-      return { id: "ScheduledTweetView", scheduledTweet }
+      return { id: scheduledTweet.id, scheduledTweet }
+    },
+  },
+
+  Mutation: {
+    updateScheduledTweet: async (root, { scheduledTweet }, { dataSources, user }) => {
+      const savedST = await dataSources.tweetAPI.findScheduledTweet(scheduledTweet.id)
+      if (!savedST) {
+        throw new Error(`Cannot find Scheduled Tweet with id "${scheduledTweet.id}"`)
+      }
+      if (savedST.userId !== user.id) {
+        throw new Error("Unauthorized")
+      }
+      const updatedST = await dataSources.tweetAPI.updateScheduledTweet(savedST, scheduledTweet)
+      return updatedST
+    },
+  },
+
+  ScheduledTweet: {
+    tweets: root => {
+      // use tweetOrder field to return an ordered array
+      // runtime O(n^2) but since n is small this should be fine
+      return root.tweetsOrder.split(",").map(id => root.tweets.find(t => t.id === id))
     },
   },
 }

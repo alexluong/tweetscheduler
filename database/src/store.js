@@ -26,6 +26,7 @@ exports.createStore = function() {
     },
     status: Sequelize.STRING,
     scheduledAt: Sequelize.DATE,
+    tweetsOrder: Sequelize.STRING,
   })
 
   const Tweet = db.define("tweet", {
@@ -36,8 +37,8 @@ exports.createStore = function() {
     content: Sequelize.STRING,
   })
 
-  User.hasMany(ScheduledTweet)
-  ScheduledTweet.hasMany(Tweet)
+  User.ScheduledTweet = User.hasMany(ScheduledTweet)
+  ScheduledTweet.Tweets = ScheduledTweet.hasMany(Tweet, { onDelete: "cascade" })
 
   return { User, ScheduledTweet, Tweet }
 }

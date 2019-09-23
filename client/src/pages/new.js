@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker"
 import { Badge, Box, Button, IconButton, Input, Text } from "@chakra-ui/core"
 import Layout from "../components/Layout"
 import TweetInput from "../components/TweetInput"
-import getStatusColor from "../utils/getStatusColor"
+import { getStatusColor } from "../utils/helpers"
 import { COLORS } from "../utils/constants"
 
 function DatePickerInput({ value, onClick }) {

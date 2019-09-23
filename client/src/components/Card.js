@@ -13,8 +13,8 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/core"
-import { COLORS } from "../utils/constants"
-import getStatusColor from "../utils/getStatusColor"
+import { COLORS, STATUS } from "../utils/constants"
+import { getStatusColor } from "../utils/helpers"
 
 function Card({ scheduledTweet }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -39,7 +39,8 @@ function Card({ scheduledTweet }) {
     >
       <Flex align="baseline">
         <Badge variantColor={statusColor}>{scheduledTweet.status}</Badge>
-        {(scheduledTweet.status === "SCHEDULED" || scheduledTweet.status === "POSTED") && (
+        {(scheduledTweet.status === STATUS.scheduled ||
+          scheduledTweet.status === STATUS.posted) && (
           <Text ml={2} fontSize="sm" color="gray.500">
             {formatDistanceToNow(new Date(Number(scheduledTweet.scheduledAt)), { addSuffix: true })}
           </Text>
@@ -57,7 +58,7 @@ function Card({ scheduledTweet }) {
         )}
       </Text>
 
-      {scheduledTweet.status !== "POSTED" && (
+      {scheduledTweet.status !== STATUS.posted && (
         <>
           <Box mt={8}>
             <Button

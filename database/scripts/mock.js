@@ -10,22 +10,32 @@ async function mock() {
 
   function createScheduledTweet(type) {
     const id = shortId.generate()
-    const numTweet = Math.floor(Math.random() * 10) + 1
+    const numTweet = Math.floor(Math.random() * 5) + 1
 
-    ScheduledTweet.create({
+    const options = {
       id,
       status: type,
       scheduledAt: type !== "POSTED" ? faker.date.future() : faker.date.past(),
       userId: TWITTER_USER_ID,
-    })
+      tweetsOrder: "",
+    }
+
+    const tweets = []
 
     for (let i = 0; i < numTweet; i++) {
-      Tweet.create({
-        id: shortId.generate(),
+      const tweetId = shortId.generate()
+      tweets.push({
+        id: tweetId,
         content: faker.lorem.sentences(Math.floor(Math.random() * 5) + 1),
         scheduledTweetId: id,
       })
+      options.tweetsOrder = `${options.tweetsOrder},${tweetId}`
     }
+
+    options.tweetsOrder = options.tweetsOrder.slice(1)
+
+    tweets.forEach(tweet => Tweet.create(tweet))
+    ScheduledTweet.create(options)
   }
 
   createScheduledTweet("DRAFT")

@@ -7,6 +7,10 @@ const typeDefs = gql`
     scheduledTweetView(id: ID!): ScheduledTweetView
   }
 
+  type Mutation {
+    updateScheduledTweet(scheduledTweet: ScheduledTweetInput!): ScheduledTweet
+  }
+
   type DashboardView {
     id: ID!
     scheduledTweets: [ScheduledTweet]!
@@ -33,6 +37,18 @@ const typeDefs = gql`
   }
 
   type Tweet {
+    id: ID!
+    content: String!
+  }
+
+  input ScheduledTweetInput {
+    id: ID!
+    status: String!
+    scheduledAt: String!
+    tweets: [TweetInput!]!
+  }
+
+  input TweetInput {
     id: ID!
     content: String!
   }

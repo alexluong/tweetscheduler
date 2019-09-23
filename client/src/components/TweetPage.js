@@ -1,12 +1,14 @@
 import React from "react"
-import { useQuery } from "urql"
+import { navigate } from "gatsby"
+import { useQuery, useMutation } from "urql"
 import gql from "graphql-tag"
+import shortId from "shortid"
 import DatePicker from "react-datepicker"
 import { Badge, Box, Button, Input, Text } from "@chakra-ui/core"
 import PrivateRoute from "./PrivateRoute"
 import Layout from "./Layout"
 import TweetInput from "./TweetInput"
-import getStatusColor from "../utils/getStatusColor"
+import { getStatusColor, stripTypenames } from "../utils/helpers"
 import { COLORS } from "../utils/constants"
 
 const tweetQuery = gql`
@@ -26,13 +28,50 @@ const tweetQuery = gql`
   }
 `
 
+const tweetMutation = gql`
+  mutation ScheduledTweetMutation($scheduledTweet: ScheduledTweetInput!) {
+    updateScheduledTweet(scheduledTweet: $scheduledTweet) {
+      id
+      status
+      scheduledAt
+      tweets {
+        id
+        content
+      }
+    }
+  }
+`
+
 function TweetPageContainer({ id }) {
-  const [res] = useQuery({ query: tweetQuery, variables: { id } })
-  return <TweetPage fetching={res.fetching} error={res.error} data={res.data} />
+  const [queryRes] = useQuery({ query: tweetQuery, variables: { id } })
+  const [mutationRes, updateScheduledTweet] = useMutation(tweetMutation)
+
+  return (
+    <TweetPage
+      fetching={queryRes.fetching}
+      error={queryRes.error}
+      data={queryRes.data}
+      updateScheduledTweet={updateScheduledTweet}
+      updateSuccessful={Boolean(mutationRes.data)}
+      updateError={mutationRes.error}
+    />
+  )
 }
 
-function TweetPage({ fetching, error, data }) {
-  if (fetching) {
+function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessful, updateError }) {
+  if (updateSuccessful) {
+    navigate("/dashboard")
+  }
+
+  const { scheduledTweet, setScheduledTweet, addTweet, removeTweet, setTweet } = useScheduledTweet()
+
+  React.useEffect(() => {
+    if (data && data.scheduledTweetView) {
+      setScheduledTweet(stripTypenames(data.scheduledTweetView.scheduledTweet))
+    }
+  }, [data, setScheduledTweet])
+
+  if ((fetching || !scheduledTweet) && !error) {
     return (
       <PrivateRoute>
         <Layout>
@@ -42,8 +81,8 @@ function TweetPage({ fetching, error, data }) {
     )
   }
 
-  if (error) {
-    console.log(error)
+  if (error || updateError) {
+    console.error({ queryError: error, mutationError: updateError })
     return (
       <PrivateRoute>
         <Layout>
@@ -52,8 +91,6 @@ function TweetPage({ fetching, error, data }) {
       </PrivateRoute>
     )
   }
-
-  const scheduledTweet = data.scheduledTweetView.scheduledTweet
 
   return (
     <PrivateRoute>
@@ -64,7 +101,12 @@ function TweetPage({ fetching, error, data }) {
           </Badge>
 
           {scheduledTweet.tweets.map((tweet, i) => (
-            <TweetInput key={tweet.id} index={i} tweet={tweet} onChange={() => {}} />
+            <TweetInput
+              key={tweet.id}
+              tweet={tweet}
+              onChange={setTweet(i)}
+              removeTweet={removeTweet(i)}
+            />
           ))}
 
           <Button
@@ -74,7 +116,7 @@ function TweetPage({ fetching, error, data }) {
             size="sm"
             mb={8}
             display="flex"
-            // alignItems="center"
+            onClick={addTweet}
           >
             Add another tweet
           </Button>
@@ -82,7 +124,9 @@ function TweetPage({ fetching, error, data }) {
           <DatePicker
             minDate={Number(scheduledTweet.scheduledAt)}
             selected={Number(scheduledTweet.scheduledAt)}
-            onChange={() => {}}
+            onChange={date => {
+              setScheduledTweet({ ...scheduledTweet, scheduledAt: date.getTime().toString() })
+            }}
             showTimeSelect
             shouldCloseOnSelect
             timeIntervals={1}
@@ -91,7 +135,13 @@ function TweetPage({ fetching, error, data }) {
           />
 
           <Box mt={12}>
-            <Button variantColor={COLORS.primary} mr={4}>
+            <Button
+              variantColor={COLORS.primary}
+              mr={4}
+              onClick={() => {
+                updateScheduledTweet({ scheduledTweet })
+              }}
+            >
               Schedule Tweet
             </Button>
             <Button variant="outline" variantColor={COLORS.primary} mr={4}>
@@ -107,20 +157,48 @@ function TweetPage({ fetching, error, data }) {
   )
 }
 
-function DatePickerInput({ value, onClick }) {
+const DatePickerInput = React.forwardRef(({ value, onClick }, ref) => {
   return (
     <Text as="label" fontWeight="bold" fontSize="lg">
       Choose post time
-      <Input onClick={onClick} onFocus={onClick} defaultValue={value} mt={3} w={250} />
+      <Input
+        ref={ref}
+        onClick={onClick}
+        onFocus={onClick}
+        value={value}
+        readOnly
+        mt={3}
+        w={250}
+        style={{ backgroundColor: "#fff" }} // counteract readOnly
+      />
     </Text>
   )
+})
+
+function useScheduledTweet() {
+  const [scheduledTweet, setScheduledTweet] = React.useState()
+
+  function addTweet() {
+    setScheduledTweet({
+      ...scheduledTweet,
+      tweets: [...scheduledTweet.tweets, { id: shortId.generate(), content: "" }],
+    })
+  }
+
+  const removeTweet = index => () => {
+    setScheduledTweet({
+      ...scheduledTweet,
+      tweets: scheduledTweet.tweets.filter((v, i) => i !== index),
+    })
+  }
+
+  const setTweet = index => value => {
+    const newTweets = [...scheduledTweet.tweets]
+    newTweets[index] = { ...newTweets[index], content: value }
+    setScheduledTweet({ ...scheduledTweet, tweets: newTweets })
+  }
+
+  return { scheduledTweet, setScheduledTweet, addTweet, removeTweet, setTweet }
 }
 
 export default TweetPageContainer
-
-// const data = {
-//   id: "1",
-//   status: "DRAFT",
-//   scheduledAt: 1568607537858,
-//   tweets: [{ content: "Hello" }, { content: "World" }],
-// }
