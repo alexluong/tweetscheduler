@@ -1,4 +1,5 @@
 import React from "react"
+import { navigate } from "gatsby"
 import { formatDistanceToNow } from "date-fns"
 import {
   AlertDialog,
@@ -40,7 +41,7 @@ function Card({ scheduledTweet }) {
         <Badge variantColor={statusColor}>{scheduledTweet.status}</Badge>
         {(scheduledTweet.status === "SCHEDULED" || scheduledTweet.status === "POSTED") && (
           <Text ml={2} fontSize="sm" color="gray.500">
-            {formatDistanceToNow(new Date(scheduledTweet.scheduledAt), { addSuffix: true })}
+            {formatDistanceToNow(new Date(Number(scheduledTweet.scheduledAt)), { addSuffix: true })}
           </Text>
         )}
       </Flex>
@@ -59,7 +60,15 @@ function Card({ scheduledTweet }) {
       {scheduledTweet.status !== "POSTED" && (
         <>
           <Box mt={8}>
-            <Button variant="outline" variantColor={COLORS.primary} size="sm" mr="2">
+            <Button
+              variant="outline"
+              variantColor={COLORS.primary}
+              size="sm"
+              mr="2"
+              onClick={() => {
+                navigate(`/tweet/${scheduledTweet.id}`)
+              }}
+            >
               Edit
             </Button>
             <Button variant="ghost" variantColor={COLORS.danger} size="sm" onClick={onOpen}>

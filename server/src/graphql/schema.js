@@ -1,6 +1,22 @@
 import { gql } from "apollo-server-express"
 
 const typeDefs = gql`
+  type Query {
+    hello: String
+    dashboardView: DashboardView
+    scheduledTweetView(id: ID!): ScheduledTweetView
+  }
+
+  type DashboardView {
+    id: ID!
+    scheduledTweets: [ScheduledTweet]!
+  }
+
+  type ScheduledTweetView {
+    id: ID!
+    scheduledTweet: ScheduledTweet!
+  }
+
   type User {
     id: ID!
     upcoming: [ScheduledTweet]!
@@ -10,16 +26,15 @@ const typeDefs = gql`
   type ScheduledTweet {
     id: ID!
     status: String!
-    scheduledAt: Int!
     tweets: [Tweet!]!
+    scheduledAt: String!
+    updatedAt: String!
+    createdAt: String!
   }
 
   type Tweet {
+    id: ID!
     content: String!
-  }
-
-  type Query {
-    hello: String
   }
 `
 
