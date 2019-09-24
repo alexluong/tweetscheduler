@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "babel-node src/index.js",
-    "build": "babel src -d buildy"
+    "build": "babel src -d build"
   },
   "dependencies": {
     "@ts/database": "0.1.0",
