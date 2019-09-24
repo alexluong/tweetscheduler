@@ -21,7 +21,7 @@ function IndexPage() {
   const { isAuthenticated } = useAuth()
 
   return (
-    <Box maxW={667} mx="auto" my={16} px={5}>
+    <Box maxW={667} mx="auto" py={16} px={5}>
       <Heading as="h1" mb={5}>
         Tweet Scheduler
       </Heading>

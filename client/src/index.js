@@ -11,6 +11,7 @@ import { ThemeProvider, ColorModeProvider, CSSReset } from "@chakra-ui/core"
 import { AuthProvider } from "./components/AuthContext"
 import { DeletedTweetProvider } from "./components/DeletedTweetContext"
 import GlobalStyle from "./components/GlobalStyle"
+import SEO from "./components/SEO"
 
 const cache = cacheExchange({})
 
@@ -37,6 +38,7 @@ function Index({ children }) {
           <ThemeProvider>
             <ColorModeProvider value="light">
               <>
+                <SEO />
                 <CSSReset />
                 <GlobalStyle />
                 {children}
