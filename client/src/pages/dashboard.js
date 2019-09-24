@@ -1,12 +1,13 @@
 import React from "react"
 import { useQuery } from "urql"
 import gql from "graphql-tag"
-import { Grid, Heading } from "@chakra-ui/core"
+import { Grid, Heading, Text, Button } from "@chakra-ui/core"
 import PrivateRoute from "../components/PrivateRoute"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
+import CreateTweet from "../components/CreateTweet"
 import { useDeletedTweets } from "../components/DeletedTweetContext"
-import { STATUS } from "../utils/constants"
+import { COLORS, STATUS } from "../utils/constants"
 
 const dashboardViewQuery = gql`
   query {
@@ -65,31 +66,43 @@ function DashboardPage() {
   return (
     <PrivateRoute>
       <Layout>
+        <CreateTweet>
+          <Button variantColor={COLORS.primary} mb={16}>
+            Create a new Tweet
+          </Button>
+        </CreateTweet>
+
         <Heading as="h2" size="lg" mb={8}>
           Scheduled
         </Heading>
         <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-          {scheduledTweets.map(ts => (
-            <Card key={ts.id} scheduledTweet={ts} />
-          ))}
+          {scheduledTweets.length > 0 ? (
+            scheduledTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
+          ) : (
+            <Text>There are no scheduled posts.</Text>
+          )}
         </Grid>
 
         <Heading as="h2" size="lg" mb={8} mt={16}>
           Drafts
         </Heading>
         <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-          {draftTweets.map(ts => (
-            <Card key={ts.id} scheduledTweet={ts} />
-          ))}
+          {draftTweets.length > 0 ? (
+            draftTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
+          ) : (
+            <Text>There are no draft tweets.</Text>
+          )}
         </Grid>
 
         <Heading as="h2" size="lg" mb={8} mt={16}>
           Archives
         </Heading>
         <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-          {archivedTweets.map(ts => (
-            <Card key={ts.id} scheduledTweet={ts} />
-          ))}
+          {archivedTweets.length > 0 ? (
+            archivedTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
+          ) : (
+            <Text>There are no archives.</Text>
+          )}
         </Grid>
       </Layout>
     </PrivateRoute>
