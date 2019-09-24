@@ -8,7 +8,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    updateScheduledTweet(scheduledTweet: ScheduledTweetInput!): ScheduledTweet
+    createScheduledTweet: ScheduledTweet!
+    updateScheduledTweet(scheduledTweet: ScheduledTweetInput!): ScheduledTweet!
+    deleteScheduledTweet(scheduledTweetId: ID!): ScheduledTweet!
   }
 
   type DashboardView {

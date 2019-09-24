@@ -26,7 +26,7 @@ const dashboardViewQuery = gql`
 `
 
 function DashboardPage() {
-  const [res] = useQuery({ query: dashboardViewQuery })
+  const [res] = useQuery({ query: dashboardViewQuery, requestPolicy: "cache-and-network" })
 
   if (res.fetching) {
     return (
@@ -71,7 +71,7 @@ function DashboardPage() {
         </Grid>
 
         <Heading as="h2" size="lg" mb={8} mt={16}>
-          Draft
+          Drafts
         </Heading>
         <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
           {draftTweets.map(ts => (

@@ -29,6 +29,17 @@ const resolvers = {
   },
 
   Mutation: {
+    /**
+     * Create Scheduled Tweet
+     */
+    createScheduledTweet: async (root, args, { dataSources, user }) => {
+      const st = await dataSources.tweetAPI.createScheduledTweet(user.id)
+      return st
+    },
+
+    /**
+     * Update Scheduled Tweet
+     */
     updateScheduledTweet: async (root, { scheduledTweet }, { dataSources, user }) => {
       const savedST = await dataSources.tweetAPI.findScheduledTweet(scheduledTweet.id)
       if (!savedST) {
@@ -39,6 +50,21 @@ const resolvers = {
       }
       const updatedST = await dataSources.tweetAPI.updateScheduledTweet(savedST, scheduledTweet)
       return updatedST
+    },
+
+    /**
+     * Delete Scheduled Tweet
+     */
+    deleteScheduledTweet: async (root, { scheduledTweetId }, { dataSources, user }) => {
+      const savedST = await dataSources.tweetAPI.findScheduledTweet(scheduledTweetId)
+      if (!savedST) {
+        throw new Error(`Cannot find Scheduled Tweet with id "${scheduledTweetId}"`)
+      }
+      if (savedST.userId !== user.id) {
+        throw new Error("Unauthorized")
+      }
+      const deletedST = await dataSources.tweetAPI.deleteScheduledTweet(savedST)
+      return deletedST
     },
   },
 

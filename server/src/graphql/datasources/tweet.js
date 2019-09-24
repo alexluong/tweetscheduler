@@ -47,6 +47,47 @@ class TweetAPI extends DataSource {
     const [updatedST] = await Promise.all([updateScheduledTweetPromise, createTweetPromise])
     return updatedST
   }
+
+  async createScheduledTweet(userId) {
+    const { Tweet, ScheduledTweet } = this.store
+
+    const scheduledTweetId = shortId.generate()
+    const firstTweetId = shortId.generate()
+    const secondTweetId = shortId.generate()
+
+    const st = await ScheduledTweet.create(
+      {
+        userId,
+        id: scheduledTweetId,
+        status: "DRAFT",
+        scheduledAt: new Date(),
+        tweetsOrder: `${firstTweetId},${secondTweetId}`,
+        updater: 1,
+        tweets: [
+          {
+            id: firstTweetId,
+            content: "Tweet content...",
+            scheduledTweetId,
+          },
+          {
+            id: secondTweetId,
+            content: "You can also schedule tweetstorm!!",
+            scheduledTweetId,
+          },
+        ],
+      },
+      {
+        include: [Tweet],
+      },
+    )
+
+    return st
+  }
+
+  async deleteScheduledTweet(instance) {
+    const deletedST = await instance.destroy()
+    return deletedST
+  }
 }
 
 export default TweetAPI
