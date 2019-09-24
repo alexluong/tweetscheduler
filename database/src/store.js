@@ -9,6 +9,8 @@ exports.createStore = function() {
     logging: false,
   })
 
+  console.log(process.env.NODE_ENV)
+
   const User = db.define("user", {
     id: {
       type: Sequelize.STRING,
@@ -38,8 +40,9 @@ exports.createStore = function() {
     content: Sequelize.STRING,
   })
 
-  User.ScheduledTweet = User.hasMany(ScheduledTweet)
-  ScheduledTweet.Tweets = ScheduledTweet.hasMany(Tweet, { onDelete: "cascade" })
+  User.hasMany(ScheduledTweet)
+  ScheduledTweet.belongsTo(User)
+  ScheduledTweet.hasMany(Tweet, { onDelete: "cascade" })
 
   return { User, ScheduledTweet, Tweet }
 }

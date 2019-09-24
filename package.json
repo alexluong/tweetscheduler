@@ -6,7 +6,8 @@
   "workspaces": [
     "client",
     "server",
-    "database"
+    "database",
+    "jobs"
   ],
   "scripts": {
     "start:client": "yarn workspace @ts/client start",
