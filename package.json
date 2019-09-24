@@ -9,9 +9,10 @@
     "database"
   ],
   "scripts": {
-    "start:server": "yarn workspace @ts/server start",
     "start:client": "yarn workspace @ts/client start",
+    "start:server": "yarn workspace @ts/server start",
     "build:client": "yarn workspace @ts/client build",
+    "build:server": "yarn workspace @ts/server build",
     "db": "yarn workspace @ts/database db"
   },
   "dependencies": {
