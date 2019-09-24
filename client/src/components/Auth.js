@@ -1,7 +1,6 @@
 import React from "react"
 import { navigate } from "gatsby"
 import io from "socket.io-client"
-import { Button } from "@chakra-ui/core"
 import { useAuth } from "./AuthContext"
 
 const API_URL = process.env.GATSBY_API_URL
@@ -9,7 +8,7 @@ const API_URL = process.env.GATSBY_API_URL
 const socket = io(API_URL)
 let popup = null
 
-function Auth() {
+function Auth({ children }) {
   const [isDisabled, setIdDisabled] = React.useState(null)
   const { setIsAuthenticated, setUsername } = useAuth()
 
@@ -58,11 +57,7 @@ function Auth() {
     }, 1000)
   }
 
-  return (
-    <Button variantColor="teal" size="lg" onClick={signIn} isDisabled={isDisabled}>
-      Sign In With Twitter
-    </Button>
-  )
+  return React.cloneElement(children, { onClick: signIn, isDisabled })
 }
 
 export default Auth

@@ -40,7 +40,7 @@ function DeleteTweet({ id, onSuccess, children }) {
         onSuccess && onSuccess()
       }
     }
-  }, [res, deletedTweets, setDeletedTweets, onClose, onSuccess])
+  }, [res, deletedTweets, setDeletedTweets, isOpen, onClose, onSuccess])
 
   return (
     <>

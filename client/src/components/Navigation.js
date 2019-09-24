@@ -29,9 +29,9 @@ function Navigation() {
         <Button as={Link} to="/dashboard" variant="ghost" variantColor={COLORS.primary} mr={2}>
           Dashboard
         </Button>
-        <Button as={Link} to="/archives" variant="ghost" variantColor={COLORS.primary} mr={2}>
+        {/* <Button as={Link} to="/archives" variant="ghost" variantColor={COLORS.primary} mr={2}>
           Archives
-        </Button>
+        </Button> */}
 
         <Menu>
           <MenuButton as={Button} rightIcon="chevron-down">
