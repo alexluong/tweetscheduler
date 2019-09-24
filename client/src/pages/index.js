@@ -44,11 +44,10 @@ function IndexPage() {
         </Auth>
       )}
 
-      <List mt={12} spacing={3}>
-        <Heading as="h2" size="md" mb={4}>
-          How it works
-        </Heading>
-
+      <Heading as="h2" size="md" mt={12} mb={4}>
+        How it works
+      </Heading>
+      <List spacing={3}>
         <ListItem>
           <ListIcon icon="chat" color="teal.400" />
           Write your tweet
@@ -63,11 +62,10 @@ function IndexPage() {
         </ListItem>
       </List>
 
-      <List mt={12} spacing={3}>
-        <Heading as="h2" size="md" mb={4}>
-          Features
-        </Heading>
-
+      <Heading as="h2" size="md" mt={12} mb={4}>
+        Features
+      </Heading>
+      <List spacing={3}>
         <ListItem>
           <ListIcon icon="check" color="green.500" />
           Schedule tweet
