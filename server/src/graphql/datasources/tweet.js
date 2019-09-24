@@ -15,7 +15,7 @@ class TweetAPI extends DataSource {
   async findDashboardData(userId) {
     const scheduledTweets = await this.store.ScheduledTweet.findAll({
       where: { userId },
-      order: [["updatedAt", "DESC"]],
+      order: [["scheduledAt", "ASC"]],
       include: [{ model: this.store.Tweet, required: true }],
     })
     return scheduledTweets.map(val => val.toJSON())
@@ -42,6 +42,7 @@ class TweetAPI extends DataSource {
       ...updates,
       scheduledAt: new Date(Number(updates.scheduledAt)),
       tweetsOrder: updates.tweets.reduce((a, v) => `${a},${v.id}`, "").slice(1),
+      updater: st.updater + 1, // update updatedAt value even if nothing changes
     })
     const [updatedST] = await Promise.all([updateScheduledTweetPromise, createTweetPromise])
     return updatedST

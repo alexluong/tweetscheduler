@@ -27,6 +27,7 @@ exports.createStore = function() {
     status: Sequelize.STRING,
     scheduledAt: Sequelize.DATE,
     tweetsOrder: Sequelize.STRING,
+    updater: Sequelize.INTEGER, // update updatedAt value even if nothing changes
   })
 
   const Tweet = db.define("tweet", {

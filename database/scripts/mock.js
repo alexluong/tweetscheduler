@@ -18,6 +18,7 @@ async function mock() {
       scheduledAt: type !== "POSTED" ? faker.date.future() : faker.date.past(),
       userId: TWITTER_USER_ID,
       tweetsOrder: "",
+      updater: 1,
     }
 
     const tweets = []

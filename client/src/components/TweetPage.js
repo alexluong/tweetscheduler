@@ -9,7 +9,7 @@ import PrivateRoute from "./PrivateRoute"
 import Layout from "./Layout"
 import TweetInput from "./TweetInput"
 import { getStatusColor, stripTypenames } from "../utils/helpers"
-import { COLORS } from "../utils/constants"
+import { COLORS, STATUS } from "../utils/constants"
 
 const tweetQuery = gql`
   query ScheduledTweetViewQuery($id: ID!) {
@@ -34,6 +34,7 @@ const tweetMutation = gql`
       id
       status
       scheduledAt
+      updatedAt
       tweets {
         id
         content
@@ -122,7 +123,7 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
           </Button>
 
           <DatePicker
-            minDate={Number(scheduledTweet.scheduledAt)}
+            minDate={new Date().getTime()}
             selected={Number(scheduledTweet.scheduledAt)}
             onChange={date => {
               setScheduledTweet({ ...scheduledTweet, scheduledAt: date.getTime().toString() })
@@ -139,12 +140,23 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
               variantColor={COLORS.primary}
               mr={4}
               onClick={() => {
-                updateScheduledTweet({ scheduledTweet })
+                updateScheduledTweet({
+                  scheduledTweet: { ...scheduledTweet, status: STATUS.scheduled },
+                })
               }}
             >
               Schedule Tweet
             </Button>
-            <Button variant="outline" variantColor={COLORS.primary} mr={4}>
+            <Button
+              variant="outline"
+              variantColor={COLORS.primary}
+              mr={4}
+              onClick={() => {
+                updateScheduledTweet({
+                  scheduledTweet: { ...scheduledTweet, status: STATUS.draft },
+                })
+              }}
+            >
               Save as Draft
             </Button>
             <Button variant="ghost" variantColor={COLORS.danger} mr={4}>
