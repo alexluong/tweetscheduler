@@ -1,3 +1,4 @@
+import "./env"
 import Sequelize from "sequelize"
 import jwt from "jsonwebtoken"
 import request from "request-promise"
@@ -17,8 +18,9 @@ async function twitter() {
     const STs = await ScheduledTweet.findAll({
       where: { status: "SCHEDULED", scheduledAt: { [Op.lt]: time } },
     })
+    console.log(process.env.NODE_ENV)
 
-    STs.forEach(st => postScheduledTweet(st))
+    // STs.forEach(st => postScheduledTweet(st))
   } catch (e) {
     console.log(e)
   }

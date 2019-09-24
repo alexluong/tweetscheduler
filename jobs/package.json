@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "dotenv -e .env babel-node src/index.js"
+    "start": "babel-node src/index.js",
+    "build": "babel src -d buildy"
   },
   "dependencies": {
     "@ts/database": "0.1.0",
