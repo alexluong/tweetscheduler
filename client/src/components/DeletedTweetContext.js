@@ -4,7 +4,6 @@ const DeletedTweetContext = React.createContext()
 
 function DeletedTweetProvider({ children }) {
   const [deletedTweets, setDeletedTweets] = React.useState([])
-  console.log(deletedTweets)
 
   return (
     <DeletedTweetContext.Provider value={{ deletedTweets, setDeletedTweets }}>

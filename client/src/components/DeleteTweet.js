@@ -26,8 +26,6 @@ function DeleteTweet({ id, onSuccess, children }) {
 
   const [res, deleteTweet] = useMutation(deleteTweetMutation)
 
-  console.log(res)
-
   React.useEffect(() => {
     if (res.data) {
       onClose()
@@ -37,7 +35,7 @@ function DeleteTweet({ id, onSuccess, children }) {
         onSuccess && onSuccess()
       }, 500)
     }
-  }, [res])
+  }, [res, deletedTweets, setDeletedTweets, onClose, onSuccess])
 
   return (
     <>
