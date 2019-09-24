@@ -88,7 +88,7 @@ const apolloServer = createApolloServer(store)
 apolloServer.applyMiddleware({ app })
 
 // Start server
-const PORT = 8080
+const PORT = process.env.PORT || 8080
 server.listen({ port: PORT }, () =>
   console.log(`🚀 GraphQL ready at http://127.0.0.1:${PORT}/graphql`),
 )
