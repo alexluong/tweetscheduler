@@ -13,7 +13,7 @@ import createApolloServer from "./graphql"
 const TWITTER_CONFIG = {
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callbackURL: "http://127.0.0.1:8080/twitter/callback",
+  callbackURL: `${process.env.API_URL}/twitter/callback`,
 }
 
 const SESSION_SECRET = process.env.SESSION_SECRET
