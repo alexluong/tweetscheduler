@@ -22,7 +22,7 @@ function IndexPage() {
 
   return (
     <Box maxW={667} mx="auto" py={16} px={5}>
-      <Heading as="h1" mb={5}>
+      <Heading as="h1" mb={5} color="teal.400">
         Tweet Scheduler
       </Heading>
       <Text mb={5} fontSize={18}>
@@ -87,7 +87,7 @@ function IndexPage() {
       <Box as="footer" mt={16}>
         <Box m={-4} p={4} bg="gray.100" borderRadius={4}>
           <Text mb={2}>
-            Built in{" "}
+            Built with{" "}
             <Link isExternal href="https://gatsbyjs.org">
               Gatsby
             </Link>
