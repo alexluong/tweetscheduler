@@ -1,0 +1,39 @@
+{
+  "name": "@ts/client",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn clean && yarn develop",
+    "build": "gatsby build",
+    "clean": "gatsby clean",
+    "develop": "gatsby develop",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing \"",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\""
+  },
+  "dependencies": {
+    "@chakra-ui/core": "^0.2.8",
+    "@emotion/core": "^10.0.17",
+    "@emotion/styled": "^10.0.17",
+    "@urql/exchange-graphcache": "^1.0.0-rc.11",
+    "date-fns": "^2.2.1",
+    "emotion-theming": "^10.0.18",
+    "gatsby": "^2.15.9",
+    "gatsby-plugin-emotion": "^4.1.6",
+    "graphql": "^14.5.7",
+    "graphql-tag": "^2.10.1",
+    "isomorphic-fetch": "^2.2.1",
+    "react": "^16.9.0",
+    "react-datepicker": "^2.9.6",
+    "react-dom": "^16.9.0",
+    "socket.io-client": "^2.2.0",
+    "typeface-lato": "^0.0.75",
+    "urql": "^1.5.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.1.0",
+    "eslint-plugin-graphql": "^3.1.0",
+    "prettier": "^1.18.2"
+  }
+}
