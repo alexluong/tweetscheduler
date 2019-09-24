@@ -28,18 +28,31 @@ function DeleteTweet({ id, onSuccess, children }) {
 
   React.useEffect(() => {
     if (res.data) {
-      onClose()
+      if (isOpen) {
+        onClose()
 
-      setTimeout(() => {
+        setTimeout(() => {
+          setDeletedTweets([...deletedTweets, res.data.deleteScheduledTweet.id])
+          onSuccess && onSuccess()
+        }, 500)
+      } else {
         setDeletedTweets([...deletedTweets, res.data.deleteScheduledTweet.id])
         onSuccess && onSuccess()
-      }, 500)
+      }
     }
   }, [res, deletedTweets, setDeletedTweets, onClose, onSuccess])
 
   return (
     <>
-      {React.cloneElement(children, { onClick: onOpen })}
+      {React.cloneElement(children, {
+        onClick: e => {
+          if (e.shiftKey) {
+            deleteTweet({ scheduledTweetId: id })
+          } else {
+            onOpen()
+          }
+        },
+      })}
 
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogHeader fontSize="lg" fontWeight="bold">

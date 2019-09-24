@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
 import { COLORS } from "../utils/constants"
-import { Flex, Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/core"
+import { Flex, Button, Heading, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/core"
 import CreateTweet from "./CreateTweet"
 import { useAuth } from "./AuthContext"
 
@@ -15,7 +15,11 @@ function Navigation() {
 
   return (
     <Flex align="center" justify="space-between" px={4} py={6}>
-      <h1 style={{ fontWeight: 700, fontSize: 18 }}>Tweet Scheduler</h1>
+      <Link to="/dashboard">
+        <Heading as="h1" size="md">
+          Tweet Scheduler
+        </Heading>
+      </Link>
       <Flex align="center" justify="start">
         <CreateTweet>
           <Button to="/new" variant="outline" variantColor={COLORS.primary} mr={2}>
