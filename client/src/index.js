@@ -9,6 +9,7 @@ import { cacheExchange } from "@urql/exchange-graphcache"
 import fetch from "isomorphic-fetch"
 import { ThemeProvider, ColorModeProvider, CSSReset } from "@chakra-ui/core"
 import { AuthProvider } from "./components/AuthContext"
+import { DeletedTweetProvider } from "./components/DeletedTweetContext"
 import GlobalStyle from "./components/GlobalStyle"
 
 const cache = cacheExchange({})
@@ -32,15 +33,17 @@ function Index({ children }) {
   return (
     <GraphQLProvider value={client}>
       <AuthProvider>
-        <ThemeProvider>
-          <ColorModeProvider value="light">
-            <>
-              <CSSReset />
-              <GlobalStyle />
-              {children}
-            </>
-          </ColorModeProvider>
-        </ThemeProvider>
+        <DeletedTweetProvider>
+          <ThemeProvider>
+            <ColorModeProvider value="light">
+              <>
+                <CSSReset />
+                <GlobalStyle />
+                {children}
+              </>
+            </ColorModeProvider>
+          </ThemeProvider>
+        </DeletedTweetProvider>
       </AuthProvider>
     </GraphQLProvider>
   )

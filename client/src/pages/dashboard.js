@@ -5,6 +5,7 @@ import { Grid, Heading } from "@chakra-ui/core"
 import PrivateRoute from "../components/PrivateRoute"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
+import { useDeletedTweets } from "../components/DeletedTweetContext"
 import { STATUS } from "../utils/constants"
 
 const dashboardViewQuery = gql`
@@ -27,6 +28,7 @@ const dashboardViewQuery = gql`
 
 function DashboardPage() {
   const [res] = useQuery({ query: dashboardViewQuery, requestPolicy: "cache-and-network" })
+  const { deletedTweets } = useDeletedTweets()
 
   if (res.fetching) {
     return (
@@ -48,7 +50,9 @@ function DashboardPage() {
     )
   }
 
-  const allTweets = res.data.dashboardView.scheduledTweets
+  const allTweets = res.data.dashboardView.scheduledTweets.filter(
+    t => !deletedTweets.includes(t.id),
+  )
 
   const scheduledTweets = allTweets
     .filter(tweet => tweet.status === STATUS.scheduled)

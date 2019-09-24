@@ -9,6 +9,7 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/core"
+import { useDeletedTweets } from "./DeletedTweetContext"
 
 const deleteTweetMutation = gql`
   mutation deleteTweetMutation($scheduledTweetId: ID!) {
@@ -18,7 +19,8 @@ const deleteTweetMutation = gql`
   }
 `
 
-function DeleteTweet({ id, children }) {
+function DeleteTweet({ id, onSuccess, children }) {
+  const { deletedTweets, setDeletedTweets } = useDeletedTweets()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
 
@@ -26,9 +28,16 @@ function DeleteTweet({ id, children }) {
 
   console.log(res)
 
-  if (res.data) {
-    // onClose()
-  }
+  React.useEffect(() => {
+    if (res.data) {
+      onClose()
+
+      setTimeout(() => {
+        setDeletedTweets([...deletedTweets, res.data.deleteScheduledTweet.id])
+        onSuccess && onSuccess()
+      }, 500)
+    }
+  }, [res])
 
   return (
     <>

@@ -8,6 +8,7 @@ import { Badge, Box, Button, Input, Text } from "@chakra-ui/core"
 import PrivateRoute from "./PrivateRoute"
 import Layout from "./Layout"
 import TweetInput from "./TweetInput"
+import DeleteTweet from "./DeleteTweet"
 import { getStatusColor, stripTypenames } from "../utils/helpers"
 import { COLORS, STATUS } from "../utils/constants"
 
@@ -159,9 +160,11 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
             >
               Save as Draft
             </Button>
-            <Button variant="ghost" variantColor={COLORS.danger} mr={4}>
-              Delete
-            </Button>
+            <DeleteTweet id={scheduledTweet.id} onSuccess={() => navigate("/dashboard")}>
+              <Button variant="ghost" variantColor={COLORS.danger} mr={4}>
+                Delete
+              </Button>
+            </DeleteTweet>
           </Box>
         </Box>
       </Layout>
