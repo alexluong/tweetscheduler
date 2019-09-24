@@ -1,10 +1,21 @@
 import React from "react"
 import { navigate } from "gatsby"
+import TweetParser from "twitter-text"
 import { useQuery, useMutation } from "urql"
 import gql from "graphql-tag"
 import shortId from "shortid"
 import DatePicker from "react-datepicker"
-import { Badge, Box, Button, Input, Text } from "@chakra-ui/core"
+import {
+  Badge,
+  Box,
+  Button,
+  Input,
+  Text,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/core"
 import PrivateRoute from "./PrivateRoute"
 import Layout from "./Layout"
 import TweetInput from "./TweetInput"
@@ -65,7 +76,16 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
     navigate("/dashboard")
   }
 
-  const { scheduledTweet, setScheduledTweet, addTweet, removeTweet, setTweet } = useScheduledTweet()
+  const [isInvalid, setIsInvalid] = React.useState(false)
+
+  const {
+    scheduledTweet,
+    setScheduledTweet,
+    addTweet,
+    removeTweet,
+    setTweet,
+    isScheduledTweetValid,
+  } = useScheduledTweet()
 
   React.useEffect(() => {
     if (data && data.scheduledTweetView) {
@@ -136,14 +156,19 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
             customInput={<DatePickerInput />}
           />
 
-          <Box mt={12}>
+          <Box>
             <Button
               variantColor={COLORS.primary}
               mr={4}
               onClick={() => {
-                updateScheduledTweet({
-                  scheduledTweet: { ...scheduledTweet, status: STATUS.scheduled },
-                })
+                console.log(isScheduledTweetValid())
+                if (isScheduledTweetValid()) {
+                  updateScheduledTweet({
+                    scheduledTweet: { ...scheduledTweet, status: STATUS.scheduled },
+                  })
+                } else {
+                  setIsInvalid(true)
+                }
               }}
             >
               Schedule Tweet
@@ -166,6 +191,14 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
               </Button>
             </DeleteTweet>
           </Box>
+
+          {isInvalid && (
+            <Alert status="error" borderRadius={4} mt={8}>
+              <AlertIcon />
+              <AlertTitle mr={2}>Cannot schedule Tweet!</AlertTitle>
+              <AlertDescription>Please make sure all your tweets are valid.</AlertDescription>
+            </Alert>
+          )}
         </Box>
       </Layout>
     </PrivateRoute>
@@ -174,7 +207,7 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
 
 const DatePickerInput = React.forwardRef(({ value, onClick }, ref) => {
   return (
-    <Text as="label" fontWeight="bold" fontSize="lg">
+    <Text as="label" fontWeight="bold" fontSize="lg" mb={12} display="block">
       Choose post time
       <Input
         ref={ref}
@@ -213,7 +246,18 @@ function useScheduledTweet() {
     setScheduledTweet({ ...scheduledTweet, tweets: newTweets })
   }
 
-  return { scheduledTweet, setScheduledTweet, addTweet, removeTweet, setTweet }
+  function isScheduledTweetValid() {
+    return scheduledTweet.tweets.every(tweet => TweetParser.parseTweet(tweet.content).valid)
+  }
+
+  return {
+    scheduledTweet,
+    setScheduledTweet,
+    addTweet,
+    removeTweet,
+    setTweet,
+    isScheduledTweetValid,
+  }
 }
 
 export default TweetPageContainer
