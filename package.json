@@ -11,6 +11,7 @@
   "scripts": {
     "start:server": "yarn workspace @ts/server start",
     "start:client": "yarn workspace @ts/client start",
+    "build:client": "yarn workspace @ts/client build",
     "db": "yarn workspace @ts/database db"
   },
   "dependencies": {
