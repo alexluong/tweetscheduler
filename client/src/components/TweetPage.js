@@ -1,5 +1,5 @@
 import React from "react"
-import { navigate } from "gatsby"
+import { Link, navigate } from "gatsby"
 import TweetParser from "twitter-text"
 import { useQuery, useMutation } from "urql"
 import gql from "graphql-tag"
@@ -118,6 +118,18 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
     <PrivateRoute>
       <Layout>
         <Box mx="auto" maxW={800}>
+          <Box mb={8}>
+            <Button
+              as={Link}
+              to="/dashboard"
+              leftIcon="arrow-back"
+              variantColor={COLORS.primary}
+              variant="outline"
+            >
+              Back to Dashboard
+            </Button>
+          </Box>
+
           <Badge variantColor={getStatusColor(scheduledTweet.status)}>
             {scheduledTweet.status}
           </Badge>
@@ -160,6 +172,7 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
             <Button
               variantColor={COLORS.primary}
               mr={4}
+              mb={4}
               onClick={() => {
                 console.log(isScheduledTweetValid())
                 if (isScheduledTweetValid()) {
@@ -177,6 +190,7 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
               variant="outline"
               variantColor={COLORS.primary}
               mr={4}
+              mb={4}
               onClick={() => {
                 updateScheduledTweet({
                   scheduledTweet: { ...scheduledTweet, status: STATUS.draft },
@@ -186,7 +200,7 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
               Save as Draft
             </Button>
             <DeleteTweet id={scheduledTweet.id} onSuccess={() => navigate("/dashboard")}>
-              <Button variant="ghost" variantColor={COLORS.danger} mr={4}>
+              <Button variant="ghost" variantColor={COLORS.danger} mr={4} mb={4}>
                 Delete
               </Button>
             </DeleteTweet>

@@ -13,8 +13,8 @@ function Layout({ children }) {
         borderTopStyle="solid"
         borderTopWidth={1}
         borderTopColor="gray.200"
-        px={24}
-        py={16}
+        px={[8, 12, 16, 24]}
+        py={[8, 16]}
       >
         {children}
       </Box>

@@ -14,19 +14,38 @@ function Navigation() {
   }
 
   return (
-    <Flex align="center" justify="space-between" px={4} py={6}>
+    <Flex
+      align={["start", "start", "center"]}
+      justify="space-between"
+      direction={["column", "column", "row"]}
+      px={[8, 12, 16, 24]}
+      py={6}
+    >
       <Link to="/dashboard">
-        <Heading as="h1" size="md">
+        <Heading as="h1" size="md" display="block" mb={[4, 4, 0]}>
           Tweet Scheduler
         </Heading>
       </Link>
-      <Flex align="center" justify="start">
+      <Flex align="center" justify="start" direction={["column-reverse", "column-reverse", "row"]}>
         <CreateTweet>
-          <Button to="/new" variant="outline" variantColor={COLORS.primary} mr={2}>
+          <Button
+            to="/new"
+            variant="outline"
+            variantColor={COLORS.primary}
+            display={["none", "none", "inline-flex"]}
+            mr={2}
+          >
             Schedule a Tweet
           </Button>
         </CreateTweet>
-        <Button as={Link} to="/dashboard" variant="ghost" variantColor={COLORS.primary} mr={2}>
+        <Button
+          as={Link}
+          to="/dashboard"
+          variant="ghost"
+          variantColor={COLORS.primary}
+          display={["none", "none", "inline-flex"]}
+          mr={2}
+        >
           Dashboard
         </Button>
         {/* <Button as={Link} to="/archives" variant="ghost" variantColor={COLORS.primary} mr={2}>
@@ -34,7 +53,7 @@ function Navigation() {
         </Button> */}
 
         <Menu>
-          <MenuButton as={Button} rightIcon="chevron-down">
+          <MenuButton as={Button} rightIcon="chevron-down" mb={[4, 4, 0]}>
             @{username}
           </MenuButton>
           <MenuList>

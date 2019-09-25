@@ -67,7 +67,7 @@ function DashboardPage() {
     <PrivateRoute>
       <Layout>
         <CreateTweet>
-          <Button variantColor={COLORS.primary} mb={16}>
+          <Button variantColor={COLORS.primary} mb={[8, 16]}>
             Create a new Tweet
           </Button>
         </CreateTweet>
@@ -86,7 +86,7 @@ function DashboardPage() {
         <Heading as="h2" size="lg" mb={8} mt={16}>
           Drafts
         </Heading>
-        <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
+        <Grid gap={16} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
           {draftTweets.length > 0 ? (
             draftTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
           ) : (
