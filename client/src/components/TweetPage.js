@@ -96,9 +96,7 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
   if ((fetching || !scheduledTweet) && !error) {
     return (
       <PrivateRoute>
-        <Layout>
-          <p>Fetching...</p>
-        </Layout>
+        <Layout>{/* <p>Fetching...</p> */}</Layout>
       </PrivateRoute>
     )
   }

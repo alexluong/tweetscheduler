@@ -1,7 +1,7 @@
 import React from "react"
 import { useQuery } from "urql"
 import gql from "graphql-tag"
-import { Grid, Heading, Text, Button } from "@chakra-ui/core"
+import { Box, Grid, Heading, Text, Button } from "@chakra-ui/core"
 import PrivateRoute from "../components/PrivateRoute"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -34,9 +34,7 @@ function DashboardPage() {
   if (res.fetching) {
     return (
       <PrivateRoute>
-        <Layout>
-          <p>Fetching...</p>
-        </Layout>
+        <Layout>{/* <p>Fetching...</p> */}</Layout>
       </PrivateRoute>
     )
   }
@@ -66,44 +64,46 @@ function DashboardPage() {
   return (
     <PrivateRoute>
       <Layout>
-        <CreateTweet>
-          <Button variantColor={COLORS.primary} mb={[8, 16]}>
-            Create a new Tweet
-          </Button>
-        </CreateTweet>
+        <Box maxW={1200} mx="auto">
+          <CreateTweet>
+            <Button variantColor={COLORS.primary} mb={[8, 16]}>
+              Create a new Tweet
+            </Button>
+          </CreateTweet>
 
-        <Heading as="h2" size="lg" mb={8}>
-          Scheduled
-        </Heading>
-        <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-          {scheduledTweets.length > 0 ? (
-            scheduledTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
-          ) : (
-            <Text>There are no scheduled posts.</Text>
-          )}
-        </Grid>
+          <Heading as="h2" size="lg" mb={8}>
+            Scheduled
+          </Heading>
+          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
+            {scheduledTweets.length > 0 ? (
+              scheduledTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
+            ) : (
+              <Text>There are no scheduled posts.</Text>
+            )}
+          </Grid>
 
-        <Heading as="h2" size="lg" mb={8} mt={16}>
-          Drafts
-        </Heading>
-        <Grid gap={16} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
-          {draftTweets.length > 0 ? (
-            draftTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
-          ) : (
-            <Text>There are no draft tweets.</Text>
-          )}
-        </Grid>
+          <Heading as="h2" size="lg" mb={8} mt={16}>
+            Drafts
+          </Heading>
+          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
+            {draftTweets.length > 0 ? (
+              draftTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
+            ) : (
+              <Text>There are no draft tweets.</Text>
+            )}
+          </Grid>
 
-        <Heading as="h2" size="lg" mb={8} mt={16}>
-          Archives
-        </Heading>
-        <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
-          {archivedTweets.length > 0 ? (
-            archivedTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
-          ) : (
-            <Text>There are no archives.</Text>
-          )}
-        </Grid>
+          <Heading as="h2" size="lg" mb={8} mt={16}>
+            Archives
+          </Heading>
+          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
+            {archivedTweets.length > 0 ? (
+              archivedTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
+            ) : (
+              <Text>There are no archives.</Text>
+            )}
+          </Grid>
+        </Box>
       </Layout>
     </PrivateRoute>
   )
