@@ -1,17 +1,6 @@
 import React from "react"
 import { Link as GatsbyLink } from "gatsby"
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-  Icon,
-  List,
-  ListItem,
-  ListIcon,
-  Link,
-} from "@chakra-ui/core"
+import { Box, Button, Heading, Text, Icon, List, ListItem, ListIcon, Link } from "@chakra-ui/core"
 import Auth from "../components/Auth"
 import { useAuth } from "../components/AuthContext"
 import TwitterIcon from "../components/TwitterIcon"
@@ -108,17 +97,16 @@ function IndexPage() {
           </Text>
 
           <Box>
-            <Flex
-              display="inline-flex"
-              as={Link}
+            <Link
               isExternal
               href="https://github.com/alexluong/tweetscheduler"
-              align="center"
+              display="inline-flex"
+              alignItems="center"
               mr={5}
               mb={2}
             >
               Open sourced on GitHub <Icon name="external-link" mx={1} />
-            </Flex>
+            </Link>
           </Box>
 
           <Text mb={2}>
