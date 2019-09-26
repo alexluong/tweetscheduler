@@ -74,7 +74,7 @@ function DashboardPage() {
           <Heading as="h2" size="lg" mb={8}>
             Scheduled
           </Heading>
-          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
+          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
             {scheduledTweets.length > 0 ? (
               scheduledTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
             ) : (
@@ -96,7 +96,7 @@ function DashboardPage() {
           <Heading as="h2" size="lg" mb={8} mt={16}>
             Archives
           </Heading>
-          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(300px, 1fr))">
+          <Grid gap={16} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
             {archivedTweets.length > 0 ? (
               archivedTweets.map(ts => <Card key={ts.id} scheduledTweet={ts} />)
             ) : (
