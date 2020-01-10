@@ -288,7 +288,7 @@ function useScheduledTweet() {
       ) {
         scheduledTweet.tweets[tweetIndex].media.push({
           id: shortId.generate(),
-          type: "externalImage",
+          type: "TWEET_IMAGE_EXTERNAL",
           externalUrl: "",
           altText: "",
         })
