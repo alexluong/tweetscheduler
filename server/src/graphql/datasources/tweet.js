@@ -16,27 +16,48 @@ class TweetAPI extends DataSource {
     const scheduledTweets = await this.store.ScheduledTweet.findAll({
       where: { userId },
       order: [["scheduledAt", "ASC"]],
-      include: [{ model: this.store.Tweet, required: true }],
+      include: [
+        {
+          model: this.store.Tweet,
+          required: true,
+          include: [{ model: this.store.Media }],
+        },
+      ],
     })
     return scheduledTweets.map(val => val.toJSON())
   }
 
   async findScheduledTweet(scheduledTweetId) {
     const scheduledTweet = await this.store.ScheduledTweet.findByPk(scheduledTweetId, {
-      include: [{ model: this.store.Tweet, required: true }],
+      include: [
+        {
+          model: this.store.Tweet,
+          required: true,
+          include: [{ model: this.store.Media }],
+        },
+      ],
     })
     return scheduledTweet
   }
 
   async updateScheduledTweet(st, updates) {
-    const { Tweet, ScheduledTweet } = this.store
+    const { Tweet, Media } = this.store
     const { Op } = Sequelize
 
     const tweetsId = st.tweets.map(tweet => tweet.id)
 
+    // cascade did not work for me, so I had to delete these manually?
+    await Media.destroy({ where: { tweetId: { [Op.or]: tweetsId } } })
     await Tweet.destroy({ where: { id: { [Op.or]: tweetsId } } })
     const createTweetPromise = Tweet.bulkCreate(
       updates.tweets.map(tweet => ({ ...tweet, scheduledTweetId: st.id })),
+      {
+        include: [
+          {
+            model: this.store.Media,
+          },
+        ],
+      },
     )
     const updateScheduledTweetPromise = st.update({
       ...updates,
@@ -68,6 +89,7 @@ class TweetAPI extends DataSource {
             id: firstTweetId,
             content: "Tweet content...",
             scheduledTweetId,
+            media: [],
           },
           {
             id: secondTweetId,
@@ -77,7 +99,12 @@ class TweetAPI extends DataSource {
         ],
       },
       {
-        include: [Tweet],
+        include: [
+          {
+            model: this.store.Tweet,
+            include: [this.store.Media],
+          },
+        ],
       },
     )
 

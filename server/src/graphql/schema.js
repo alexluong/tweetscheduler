@@ -41,6 +41,14 @@ const typeDefs = gql`
   type Tweet {
     id: ID!
     content: String!
+    media: [Media]!
+  }
+
+  type Media {
+    id: ID!
+    type: String!
+    externalUrl: String!
+    altText: String!
   }
 
   input ScheduledTweetInput {
@@ -53,6 +61,14 @@ const typeDefs = gql`
   input TweetInput {
     id: ID!
     content: String!
+    media: [MediaInput!]!
+  }
+
+  input MediaInput {
+    id: ID!
+    type: String!
+    externalUrl: String!
+    altText: String!
   }
 `
 

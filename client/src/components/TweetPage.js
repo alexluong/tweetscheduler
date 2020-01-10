@@ -23,6 +23,8 @@ import DeleteTweet from "./DeleteTweet"
 import { getStatusColor, stripTypenames } from "../utils/helpers"
 import { COLORS, STATUS } from "../utils/constants"
 
+import { useLocalSlice } from "use-local-slice"
+
 const tweetQuery = gql`
   query ScheduledTweetViewQuery($id: ID!) {
     scheduledTweetView(id: $id) {
@@ -34,6 +36,12 @@ const tweetQuery = gql`
         tweets {
           id
           content
+          media {
+            id
+            type
+            externalUrl
+            altText
+          }
         }
       }
     }
@@ -80,10 +88,15 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
 
   const {
     scheduledTweet,
-    setScheduledTweet,
-    addTweet,
-    removeTweet,
-    setTweet,
+    dispatchAction: {
+      setScheduledTweet,
+      setTweetContent,
+      removeTweet,
+      addTweet,
+      addMedia,
+      removeMedia,
+      updateMedia,
+    },
     isScheduledTweetValid,
   } = useScheduledTweet()
 
@@ -136,8 +149,13 @@ function TweetPage({ fetching, error, data, updateScheduledTweet, updateSuccessf
             <TweetInput
               key={tweet.id}
               tweet={tweet}
-              onChange={setTweet(i)}
-              removeTweet={removeTweet(i)}
+              onChange={content => setTweetContent({ index: i, content })}
+              removeTweet={() => removeTweet(i)}
+              onAddMedia={() => addMedia({ tweetIndex: i })}
+              onRemoveMedia={({ mediaIndex }) => removeMedia({ tweetIndex: i, mediaIndex })}
+              onUpdateMedia={({ mediaIndex, ...data }) =>
+                updateMedia({ tweetIndex: i, mediaIndex, ...data })
+              }
             />
           ))}
 
@@ -235,28 +253,67 @@ const DatePickerInput = React.forwardRef(({ value, onClick }, ref) => {
   )
 })
 
+/** @typedef { { id: string; type: string; externalUrl: string; altText: string } } Media */
+/** @typedef { { id: string; content: string; media: Media[] } } Tweet */
+/** @typedef { { id: string; status: string; tweets: Tweet[]; scheuledAt: string; } } ScheduledTweet */
+
 function useScheduledTweet() {
-  const [scheduledTweet, setScheduledTweet] = React.useState()
-
-  function addTweet() {
-    setScheduledTweet({
-      ...scheduledTweet,
-      tweets: [...scheduledTweet.tweets, { id: shortId.generate(), content: "" }],
-    })
-  }
-
-  const removeTweet = index => () => {
-    setScheduledTweet({
-      ...scheduledTweet,
-      tweets: scheduledTweet.tweets.filter((v, i) => i !== index),
-    })
-  }
-
-  const setTweet = index => value => {
-    const newTweets = [...scheduledTweet.tweets]
-    newTweets[index] = { ...newTweets[index], content: value }
-    setScheduledTweet({ ...scheduledTweet, tweets: newTweets })
-  }
+  /** @type {ScheduledTweet} */
+  const initialState = undefined
+  const [scheduledTweet, dispatchAction] = useLocalSlice({
+    initialState,
+    reducers: {
+      setScheduledTweet(_, { payload: newState }) {
+        return newState
+      },
+      addTweet(scheduledTweet) {
+        scheduledTweet.tweets.push({ id: shortId.generate(), content: "", media: [] })
+      },
+      removeTweet(scheduledTweet, { payload: index }) {
+        scheduledTweet.tweets.splice(index, 1)
+      },
+      setTweetContent(
+        scheduledTweet,
+        {
+          payload: { index, content },
+        },
+      ) {
+        scheduledTweet.tweets[index].content = content
+      },
+      addMedia(
+        scheduledTweet,
+        {
+          payload: { tweetIndex },
+        },
+      ) {
+        scheduledTweet.tweets[tweetIndex].media.push({
+          id: shortId.generate(),
+          type: "externalImage",
+          externalUrl: "",
+          altText: "",
+        })
+      },
+      removeMedia(
+        scheduledTweet,
+        {
+          payload: { tweetIndex, mediaIndex },
+        },
+      ) {
+        scheduledTweet.tweets[tweetIndex].media.splice(mediaIndex, 1)
+      },
+      updateMedia(
+        scheduledTweet,
+        {
+          payload: { tweetIndex, mediaIndex, ...update },
+        },
+      ) {
+        scheduledTweet.tweets[tweetIndex].media[mediaIndex] = {
+          ...scheduledTweet.tweets[tweetIndex].media[mediaIndex],
+          ...update,
+        }
+      },
+    },
+  })
 
   function isScheduledTweetValid() {
     return scheduledTweet.tweets.every(tweet => TweetParser.parseTweet(tweet.content).valid)
@@ -264,10 +321,7 @@ function useScheduledTweet() {
 
   return {
     scheduledTweet,
-    setScheduledTweet,
-    addTweet,
-    removeTweet,
-    setTweet,
+    dispatchAction,
     isScheduledTweetValid,
   }
 }

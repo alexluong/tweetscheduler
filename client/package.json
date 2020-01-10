@@ -33,7 +33,8 @@
     "socket.io-client": "^2.2.0",
     "twitter-text": "^3.0.0",
     "typeface-lato": "^0.0.75",
-    "urql": "^1.5.0"
+    "urql": "^1.5.0",
+    "use-local-slice": "^1.1.1"
   },
   "devDependencies": {
     "dotenv": "^8.1.0",
