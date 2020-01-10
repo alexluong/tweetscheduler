@@ -21,6 +21,12 @@ const dashboardViewQuery = gql`
         tweets {
           id
           content
+          media {
+            id
+            type
+            externalUrl
+            altText
+          }
         }
       }
     }

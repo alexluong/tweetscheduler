@@ -9,6 +9,8 @@ import { getStatusColor } from "../utils/helpers"
 function Card({ scheduledTweet }) {
   const statusColor = getStatusColor(scheduledTweet.status)
 
+  const mediaSum = scheduledTweet.tweets.reduce((acc, tweet) => acc + tweet.media.length, 0)
+
   return (
     <Box
       bg="white"
@@ -39,6 +41,10 @@ function Card({ scheduledTweet }) {
           </>
         )}
       </Text>
+
+      {mediaSum > 0 && (
+        <Badge as="span">{`${mediaSum} media attachment${mediaSum > 1 ? "s" : ""}`} </Badge>
+      )}
 
       {scheduledTweet.status !== STATUS.posted && (
         <>

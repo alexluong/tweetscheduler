@@ -40,9 +40,23 @@ exports.createStore = function() {
     content: Sequelize.STRING,
   })
 
+  const Media = db.define("media", {
+    id: {
+      type: Sequelize.STRING,
+      primaryKey: true,
+    },
+    type: Sequelize.STRING,
+    externalUrl: Sequelize.STRING,
+    altText: Sequelize.STRING,
+  })
+
   User.hasMany(ScheduledTweet)
   ScheduledTweet.belongsTo(User)
   ScheduledTweet.hasMany(Tweet, { onDelete: "cascade" })
+  Tweet.hasMany(Media, { onDelete: "cascade" })
 
-  return { User, ScheduledTweet, Tweet }
+  // in dev: uncomment to (re)create sqlite database
+  // db.sync({ force: true })
+
+  return { User, ScheduledTweet, Tweet, Media }
 }
